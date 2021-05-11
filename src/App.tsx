@@ -1,25 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addItem } from './actions';
+import { itemState } from './itemReducer';
+import { NewItem } from './NewItem';
+
+
 
 function App() {
+  const items = useSelector<itemState, itemState["items"]>((state) => state.items)
+  const dispatch = useDispatch()
+
+  const onAddItem = (item:string) => {
+    dispatch(addItem(item))
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+  <NewItem addItem={onAddItem}/>
+<ul>
+  {items.map((item) => {
+    return <li key={item}>{item}</li>
+  })}
+  <li> some note</li>
+</ul>
+        </>
   );
 }
 
